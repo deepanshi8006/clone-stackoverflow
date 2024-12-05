@@ -79,4 +79,10 @@
     margin-left: 10px;
     cursor: pointer;
   }
-  
+  @media screen and (max-width: 1025px)  {
+    .edit-profile-form label input,
+    .edit-profile-form label textarea {
+      width: 80%; 
+    }
+   }
+ 
