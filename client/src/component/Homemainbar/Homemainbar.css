@@ -89,10 +89,14 @@
   @media screen and (max-width: 1020px) {
     .main-bar {
       width: 100%;
+      
     }
   }
   
-  @media screen and (max-width: 740px) {
+  @media screen and (max-width: 760px) {
+    .main-bar{
+      margin: 25px 0px;
+    }
     .display-question-container .display-votes-ans {
       padding: 10px;
     }

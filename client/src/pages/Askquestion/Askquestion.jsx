@@ -3,10 +3,12 @@ import './Askquestion.css'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux"
 import { askquestion } from '../../action/question'
+import UploadVideo from './UploadVideo';
+
 const Askquestion = () => {
     const navigate = useNavigate();
-    const dispatch=useDispatch();
-    const user = useSelector((state)=>state.currentuserreducer)
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.currentuserreducer)
     const [questiontitle, setquestiontitle] = useState("");
     const [questionbody, setquestionbody] = useState("");
     const [questiontag, setquestiontags] = useState("")
@@ -14,7 +16,7 @@ const Askquestion = () => {
         e.preventDefault();
         if (user) {
             if (questionbody && questiontitle && questiontag) {
-                dispatch(askquestion({questiontitle,questionbody,questiontag,userposted:user.result.name},navigate))
+                dispatch(askquestion({ questiontitle, questionbody, questiontag, userposted: user.result.name }, navigate))
                 alert("you have successfuly posted a question")
 
             } else {
@@ -64,6 +66,10 @@ const Askquestion = () => {
                                 placeholder='e.g. (xml typescript wordpress'
                             />
                         </label>
+                        <div>
+
+                            <UploadVideo />
+                        </div>
                     </div>
                     <input type="submit"
                         value="Review your question"

@@ -55,9 +55,72 @@
   
   @media screen and (max-width: 760px) {
     .left-sidebar {
-      position: absolute;
-      transform: translateX(-100%);
+      position: fixed; /* Change absolute to fixed */
+      top: 0; /* Ensure it's at the top of the page */
+      left: 0; /* Stick it to the left side */
+      height: 100vh; /* Make sure it occupies full height */
       z-index: 10;
+      transform: translateX(0%); /* Show the sidebar */
+    }
+  
+    .side-nav {
+      padding: 10px 0px; /* Adjust padding for smaller screens */
+    }
+  
+    .nav-btnn {
+      padding: 10px 0; /* Make sure buttons are easy to click */
     }
   }
+  @media screen and (max-width: 1024px) {
+    .left-sidebar {
+      width: 200px; /* Slightly larger sidebar for tablets */
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 10;
+      transform: translateX(0%);
+    }
   
+    .side-nav {
+      padding: 15px ; /* Adjust padding for tablet view */
+    }
+  
+    .nav-btnn {
+      padding: 10px 15px;
+    }
+  
+    .side-nav-links {
+      padding-left: 20px; /* More padding for tablet */
+    }
+  }
+  /* Desktop Devices (Above 1024px) - No changes here */
+  @media screen and (max-width: 1260px)  and (min-width: 1024px){
+    .side-nav{
+      margin-left:10px;
+    }
+  }
+
+/* Larger Screens (Above Desktop Size, e.g., 1600px and above) */
+@media screen and (min-width: 1600px) {
+  .left-sidebar {
+    width: 280px; /* Wider sidebar for larger screens */
+    position: sticky;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 10;
+  }
+
+  .side-nav {
+    padding: 25px 0px; /* Extra padding for larger screens */
+  }
+
+  .nav-btnn {
+    padding:10px; /* Slightly more padding for larger screens */
+  }
+
+  .side-nav-links {
+    padding-left: 30px; /* Even more padding for larger screens */
+  }
+}
