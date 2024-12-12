@@ -17,6 +17,10 @@ const Questionschema=mongoose.Schema({
             userid:String,
             answeredon:{type:Date,default:Date.now}
         },
+        
     ],
+    video: { type: String },
+    otp: { type: String },  
+    otpGeneratedAt: { type: Date }, 
 });
 export default mongoose.model("Question",Questionschema)

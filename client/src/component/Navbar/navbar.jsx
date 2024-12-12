@@ -10,7 +10,6 @@ import { setcurrentuser } from '../../action/currentuser'
 import { jwtDecode } from "jwt-decode"
 function Navbar({ handleslidein }) {
   var User = useSelector((state) => state.currentuserreducer)
-  console.log(User)
 
   const navigate = useNavigate()
   const dispatch = useDispatch();

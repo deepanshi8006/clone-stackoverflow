@@ -17,7 +17,7 @@ const Questiondetails = () => {
     const user = useSelector((state) => state.currentuserreducer)
     const location = useLocation()
     const navigate = useNavigate()
-    const url = "https://clone-stackoverflow-2s1x.onrender.com"
+    const url = "http://localhost:5000"
     const handlepostans = (e, answerlength) => {
         e.preventDefault();
         if (user === null) {

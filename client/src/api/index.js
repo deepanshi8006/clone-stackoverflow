@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API=axios.create({
-    baseURL:"https://clone-stackoverflow-2s1x.onrender.com"
+    baseURL:"http://localhost:5000"
 });
 
 API.interceptors.request.use((req)=>{
@@ -25,5 +25,15 @@ export const deletequestion=(id)=>API.delete(`/questions/delete/${id}`);
 export const votequestion=(id,value)=>API.patch(`/questions/vote/${id}`,{value});
 
 
+export const generateOtp = (email) => API.post('/questions/generate-otp', { email });
+export const verifyOtp = (email, otp) => API.post('/questions/verify-otp', { email, otp });
+
+
+export const uploadVideo = (formData) =>
+    API.post('/questions/upload-video', formData, {  
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    
 export const postanswer=(id,noofanswers,answerbody,useranswered)=>API.patch(`/answer/post/${id}`,{noofanswers,answerbody,useranswered});
 export const deleteanswer=(id,answerid,noofanswers)=>API.patch(`/answer/delete/${id}`,{answerid,noofanswers});

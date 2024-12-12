@@ -5,11 +5,10 @@ import Widgettag from './Widgettag'
 import { useLocation } from 'react-router-dom';
 
 const Rightsidebar = () => {
-  const location = useLocation(); // Get the current route
+  const location = useLocation(); 
 
-  // Do not render Rightsidebar on Questiondetails.jsx page
   if (location.pathname.startsWith('/Question/')) {
-    return null; // Don't render Rightsidebar for Question pages
+    return null; 
   }
   return (
     <aside className="right-sidebar" >
