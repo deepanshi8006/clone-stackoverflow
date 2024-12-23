@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 import nodemailer from "nodemailer";
 import moment from "moment-timezone";
 import ffmpeg from "fluent-ffmpeg";
-import multer from 'multer';
-
+import User from "../models/auth.js"
+import path from "path"
+import fs from "fs";
 const OTP_STORE = {};
 
 export const generateotp = async (req, res) => {
     const { email } = req.body;
     const otp = Math.floor(100000 + Math.random() * 900000);
-    console.log("Verify OTP endpoint hit");
 
     try {
         const transporter = nodemailer.createTransport({
@@ -28,8 +28,8 @@ export const generateotp = async (req, res) => {
         await transporter.sendMail(mailOptions);
 
         OTP_STORE[email] = { otp, createdAt: Date.now() };
-        
-        
+
+
 
         res.json({ message: "OTP sent successfully" });
     } catch (error) {
@@ -40,12 +40,12 @@ export const generateotp = async (req, res) => {
 export const verifyotp = async (req, res) => {
     const { email, otp } = req.body;
     const otpEntry = OTP_STORE[email];
-   
+
     if (!otpEntry) {
         return res.status(400).json({ error: "OTP not found or expired" });
     }
 
-    const isOtpValid = String(otpEntry.otp)  === String(otp) && Date.now() - otpEntry.createdAt <= 10 * 60 * 1000;
+    const isOtpValid = String(otpEntry.otp) === String(otp) && Date.now() - otpEntry.createdAt <= 10 * 60 * 1000;
 
     if (isOtpValid) {
         delete OTP_STORE[email];
@@ -55,51 +55,95 @@ export const verifyotp = async (req, res) => {
     }
 };
 
+
 export const uploadvideo = async (req, res) => {
-    const videoFile = req.file; 
-    console.log(req.file)
-    const currentTime = moment().tz("Asia/Kolkata");
-    const hour = currentTime.hour();
+    const videoFile = req.file;
 
 
-    if (hour < 0 || hour >= 21) {
-        return res.status(403).json({ error: "Uploads allowed only between 2 PM and 7 PM" });
-    }
+    const normalizedPath = path.normalize(videoFile.path);
 
-    if (videoFile.size > 50 * 1024 * 1024) {
-        return res.status(400).json({ error: "Video size exceeds 50MB" });
-    }
-   
-    ffmpeg.ffprobe(videoFile.path, async (err, metadata) => {
+
+    ffmpeg.ffprobe(normalizedPath, async (err, metadata) => {
         if (err) {
             console.error("ffprobe Error:", err.message);
             console.error("File Path:", normalizedPath);
-            console.error("ffmpeg Path:", ffmpeg.getFfmpegPath());
             return res.status(500).json({ error: "Video processing failed" });
         }
-    
-        console.log("Video Metadata:", metadata);
 
-        if (metadata.format.duration > 120) {
-            return res.status(400).json({ error: "Video length exceeds 2 minutes" });
-        }
-
-        res.json({ message: "Video uploaded successfully", file: videoFile.filename });
+        res.json({
+            message: "Video uploaded successfully",
+            file: videoFile.filename,
+        });
     });
 };
 
-
 export const Askquestion = async (req, res) => {
-    const postquestiondata = req.body;
-    const userid = req.userid;
-    const postquestion = new Question({ ...postquestiondata, userid })
     try {
-        await postquestion.save();
-        res.status(200).json("Posted a question successfully");
+        const postQuestionData = req.body;
+        const userid = req.userid;
+
+        const user = await User.findById(userid);
+        if (!user) {
+            return res.status(404).json("User  not found");
+        }
+
+
+        if (user.payments && Array.isArray(user.payments) && user.payments.length > 0) {
+            const lastPaymentDate = user.payments[user.payments.length - 1].purchasedOn;
+            const expiryDate = new Date(lastPaymentDate);
+            expiryDate.setDate(expiryDate.getDate() + 30);
+            if (user.Currentplan !== "Free" && expiryDate < new Date()) {
+                await User.findByIdAndUpdate(userid, { Currentplan: "Free" }, { new: true });
+                console.log('User  plan expired. Changed to Free plan.');
+            }
+        }
+        console.log('User  Plan:', user.Currentplan);
+
+       let maxQuestionsAllowed = 1; 
+
+        switch (user.Currentplan) {
+            case "Bronze":
+                maxQuestionsAllowed = 5; // ₹100/month
+                break;
+            case "Silver":
+                maxQuestionsAllowed = 10; // ₹300/month
+                break;
+            case "Gold":
+                maxQuestionsAllowed = Infinity; // ₹1000/month
+                break;
+            default:
+                maxQuestionsAllowed = 1; // Default is Free plan
+                break;
+        }
+        console.log('Max Questions Allowed:', maxQuestionsAllowed);
+
+        const questionsCount = await Question.countDocuments({
+            userid,
+            askedOn: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+        });
+
+        console.log('Questions Count in Last 24 Hours:', questionsCount);
+
+       if (questionsCount >= maxQuestionsAllowed) {
+            return res.status(400).json({
+                message: `Upgrade Your Plan to exceed the daily limit of ${maxQuestionsAllowed} question${maxQuestionsAllowed > 1 ? 's' : ''}.`,
+            });
+        }
+          const postQuestion = new Question({
+            ...postQuestionData,
+            userid,
+            video: req.file ? req.file.filename : null, 
+            askedOn: new Date(),
+        });
+
+        await postQuestion.save();
+        return res.status(200).json("Posted a question successfully");
+        alert("you have succesfully posted question")
+
     } catch (error) {
-        console.log(error)
-        res.status(404).json("couldn't post a new question");
-        return
+        console.error('Error in Askquestion:', error);
+        return res.status(500).json("Couldn't post a new question");
+        alert("please update your current plan")
     }
 };
 

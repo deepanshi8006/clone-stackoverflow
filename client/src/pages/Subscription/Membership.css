@@ -1,0 +1,192 @@
+/* Membership.css */
+
+/* General container styling */
+.main-bar {
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+/* Header styling */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.show-receipts-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.show-receipts-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Current plan styling */
+.current-plan {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.plan-details {
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Plans container */
+.plans-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.plan-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  padding: 20px;
+}
+
+.plan-content h2 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.plan-content p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.plan-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.plan-btn.disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.plan-btn:not(.disabled):hover {
+  background-color: #218838;
+}
+
+/* Overlay styling */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.reciept-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+}
+
+.reciept-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.close-icon {
+  font-size: 24px;
+  color: #ff0000;
+  cursor: pointer;
+}
+
+.no-receipts {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+}
+
+.receipt {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.receipt h1 {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.receipt h1 span {
+  font-weight: bold;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 20px;
+  }
+
+  .show-receipts-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .plans-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .plan-card {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    font-size: 18px;
+  }
+
+  .current-plan {
+    font-size: 18px;
+  }
+
+  .plan-content h2 {
+    font-size: 20px;
+  }
+
+  .plan-content p {
+    font-size: 14px;
+  }
+
+  .reciept-container {
+    width: 95%;
+  }
+}

@@ -7,14 +7,14 @@ import { Provider } from 'react-redux';
 import { legacy_createStore as createstore, applyMiddleware, compose } from 'redux';
 import {thunk} from "redux-thunk"
 import reducers from './reducers';
-
+import { RecoilRoot } from "recoil";
 const store =createstore(reducers, compose(applyMiddleware(thunk)))
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+     <RecoilRoot>
+        <App />
+      </RecoilRoot>
   </Provider>
 );
 
