@@ -4,10 +4,12 @@ export const askquestion = (questiondata, navigate) => async (dispatch) => {
     try {
         const { data } = await api.postquestion(questiondata);
         dispatch({ type: "POST_QUESTION", payload: data });
-        dispatch(fetchallquestion())
-        navigate("/")
+        dispatch(fetchallquestion());
+        navigate("/");
+        return data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        return { error: error.response?.data?.message || "Failed to post the question" }; 
     }
 };
 

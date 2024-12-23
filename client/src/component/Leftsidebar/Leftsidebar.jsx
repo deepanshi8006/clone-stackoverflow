@@ -10,7 +10,8 @@ const Leftsidebar = ({ slidein }) => {
     };
     const slideoutstyle = {
         transform: "translateX(-100%)",
-    }
+    } ; 
+ 
     return (
         <div className="left-sidebar" style={slidein ? slideinstyle : slideoutstyle}>
             <nav className="side-nav">
@@ -37,6 +38,11 @@ const Leftsidebar = ({ slidein }) => {
                     <button className="nav-btnn">
                         <NavLink to="/Users" className="side-nav-links" activeclassname="active" style={{ paddingLeft: "40px" }}>
                             <p>Home</p>
+                        </NavLink>
+                    </button>
+                    <button  className="nav-btnn">
+                        <NavLink to="/subscription" className="side-nav-links" activeclassname="active" style={{ paddingLeft: "40px" }}>
+                            <p >Subscription</p>
                         </NavLink>
                     </button>
                 </div>

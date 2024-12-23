@@ -1,0 +1,55 @@
+/* Success.css */
+.success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f8f9fa;
+  }
+  
+  .success-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .receipt-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
+  .receipt-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .receipt-details h1 {
+    margin: 0.5rem 0;
+  }
+  
+  .font-bold {
+    font-weight: bold;
+  }
+  
+  .back-link {
+    text-decoration: none;
+    color: #007bff;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #e7f1ff;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  
+  .back-link:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  

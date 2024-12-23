@@ -100,19 +100,19 @@
   }
   @media screen and (max-width:1276px) {
     .navbar .navbar-1 form input{
-      width: 400px; /* Adjust width to fit within available space */
+      width: 400px; 
       .navbar .navbar-2 {
-        flex-wrap: wrap; /* Allow wrapping to prevent overflow */
+        flex-wrap: wrap; 
         justify-content: flex-end;
       }
     
       .navbar .navbar-2 .nav-links,
       .navbar .navbar-2 .avatar {
-        margin: 5px; /* Add spacing to prevent overlap */
+        margin: 5px; 
       }
     
       .navbar .navbar-1 .nav-item {
-        padding: 5px; /* Reduce padding to fit elements better */
+        padding: 5px; 
       }
     }
   }

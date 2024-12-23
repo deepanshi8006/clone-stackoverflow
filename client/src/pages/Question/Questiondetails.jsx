@@ -9,6 +9,7 @@ import Displayanswer from './Displayanswer'
 import { useSelector, useDispatch } from "react-redux"
 import { Link, useNavigate, useLocation, useParams } from 'react-router-dom'
 import { deletequestion, votequestion, postanswer } from '../../action/question'
+import { baseURL } from '../../api'
 const Questiondetails = () => {
     const [answer, setanswer] = useState("")
     const dispatch = useDispatch()
@@ -17,7 +18,7 @@ const Questiondetails = () => {
     const user = useSelector((state) => state.currentuserreducer)
     const location = useLocation()
     const navigate = useNavigate()
-    const url = "https://clone-stackoverflow-2s1x.onrender.com"
+    const url = baseURL 
     const handlepostans = (e, answerlength) => {
         e.preventDefault();
         if (user === null) {
@@ -79,6 +80,14 @@ const Questiondetails = () => {
                                     </div>
                                     <div style={{ width: "100%" }}>
                                         <p className='question-body'>{question.questionbody}</p>
+                                        <div className="question-video">
+                                            {question.video && (
+                                                <video controls width="100%">
+                                                    <source src={`${baseURL}/uploads/${question.video}`} type="video/mp4" />
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            )}
+                                        </div>
                                         <div className="question-details-tags">
                                             {question.questiontags.map((tag) => (
                                                 <p key={tag}>{tag}</p>

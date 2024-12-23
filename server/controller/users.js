@@ -35,3 +35,14 @@ export const updateprofile=async(req,res)=>{
         return
     }
 }
+export const getUserPlan = async(req,res)=>{
+    const {id} = req.params;
+    if(!id){
+      return res.status(402).json({msg:"Id is Compulsory"})
+    }
+    const User = await users.findById(id)
+    if(!User){
+      return res.status(404).json({msg:"User Not Found"});
+    }
+    return res.json({success:true,plan:User.Currentplan,payment:User.payments})
+  }

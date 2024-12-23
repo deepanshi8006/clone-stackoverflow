@@ -1,7 +1,16 @@
-import users from '../models/auth.js'
-import bcrypt from "bcryptjs"
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import users from "../models/auth.js";
+import Razorpay from "razorpay";
+import dotenv from "dotenv";
+import crypto from "crypto";
 
+
+dotenv.config(); 
+export const instance = new Razorpay({
+    key_id: process.env.RAZORPAY_ID,
+    key_secret: process.env.RAZORPAY_KEY,
+  });
 export const signup = async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -51,3 +60,89 @@ export const login = async (req, res) => {
         return
     }
 }
+export const checkoutSession = async (req, res) => {
+    try {
+      const { price } = req.body;
+  
+      if (!price) {
+        return res.status(400).json({ msg: "All fields are required" });
+      }
+  
+      const options = {
+        amount: price * 100,
+        currency: "INR",
+      };
+  
+      const order = await instance.orders.create(options);
+  
+      return res.status(200).json({ success: true, order });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        data: err.message,
+        message: "Internal Server Error",
+      });
+    }
+  };
+export const paymentVerfication = async (req, res) => {
+    try {
+      const { razorpay_payment_id, razorpay_order_id, razorpay_signature } =
+        req.body;
+      const id = req.params.userId;
+      const Currentplan = req.params.plan;
+  
+      let body = razorpay_order_id + "|" + razorpay_payment_id;
+      const expectedSignature = crypto
+        .createHmac("sha256", process.env.RAZORPAY_KEY)
+        .update(body.toString())
+        .digest("hex");
+  
+      if (expectedSignature === razorpay_signature) {
+
+        const user = await users.findByIdAndUpdate(
+          id,
+          {
+            Currentplan,
+            $push: {
+              payments: {
+                planName: Currentplan,
+                razorpay_payment_id,
+                razorpay_order_id,
+                razorpay_signature,
+                purchasedOn: new Date(),
+              },
+            },
+          },
+          { new: true }
+        );
+        const { _id, name, email, tags, joinedOn } = user;
+        const Reciept = {
+          planName: Currentplan,
+          razorpay_payment_id,
+          razorpay_order_id,
+          razorpay_signature,
+          purchasedOn: new Date(),
+        };
+        const recieptData = encodeURIComponent(JSON.stringify(Reciept));
+  
+      const userData = encodeURIComponent(
+          JSON.stringify({ _id, name, email, tags, joinedOn })
+        );
+        res.redirect(
+          `http://localhost:3000/subscription/success?reference=${recieptData}&user=${userData}`
+        );
+      } else {
+        return res.redirect(
+          `http://localhost:3000/subscription/cancel?reference=${razorpay_payment_id}`
+        );
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        success: false,
+        data: err.message,
+        message: "Internal Server Error",
+      });
+    }
+  };
