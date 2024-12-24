@@ -7,20 +7,11 @@ import questionroutes from "./routes/question.js"
 import answerroutes from "./routes/answer.js"
 import paymentRoutes from './routes/paymentRoutes.js'
 
-
-const corsOptions = {
-  origin: ["http://localhost:3000", "https://darling-kelpie-39d5c8.netlify.app/"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
 const app=express();
 dotenv.config();
 app.use(express.json({limit:"30mb", extended: true}))
 app.use(express.urlencoded({limit:"30mb", extended :true}))
-app.use(cors(corsOptions))
-
+app.use(cors())
 
 app.use('/uploads', express.static('uploads'));
 app.use("/user", userroutes);
