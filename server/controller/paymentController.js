@@ -12,7 +12,7 @@ const sendInvoiceEmail = async (req, res) => {
   });
 
   const mailOptions = {
-    from: 'your-email@gmail.com',
+    from: process.env.EMAIL,,
     to: email,
     subject: 'Payment Invoice',
     html: `
