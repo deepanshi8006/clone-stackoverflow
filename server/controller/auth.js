@@ -130,11 +130,11 @@ export const paymentVerfication = async (req, res) => {
           JSON.stringify({ _id, name, email, tags, joinedOn })
         );
         res.redirect(
-          `https://prismatic-kitsune-55cc58.netlify.app//subscription/success?reference=${recieptData}&user=${userData}`
+          `https://prismatic-kitsune-55cc58.netlify.app/subscription/success?reference=${recieptData}&user=${userData}`
         );
       } else {
         return res.redirect(
-          `https://prismatic-kitsune-55cc58.netlify.app//subscription/cancel?reference=${razorpay_payment_id}`
+          `https://prismatic-kitsune-55cc58.netlify.app/subscription/cancel?reference=${razorpay_payment_id}`
         );
       }
     } catch (err) {
